@@ -1,0 +1,41 @@
+syntax = 'proto3';
+
+package grpc;
+
+option go_package = "grpc/proto";
+
+message CalculationRequest {
+    int32 a = 1;
+    int32 b = 2;
+}
+
+message AverageRequest {
+    int32 number = 1;
+}
+
+message MaximumRequest {
+    int32 number = 1;
+}
+
+message PrimeNumberDecompositionRequest {
+    int32 number = 1;
+}
+
+message CalculationResponse {
+    int32 result = 1;
+}
+
+service Calculator {
+    // grpc unary
+    rpc Add(CalculationRequest) returns (CalculationResponse);
+    rpc Subtract(CalculationRequest) returns (CalculationResponse);
+    rpc Multiply(CalculationRequest) returns (CalculationResponse);
+    rpc Divide(CalculationRequest) returns (CalculationResponse);
+    // grpc server streaming
+    rpc PrimeNumberDecomposition(PrimeNumberDecompositionRequest) returns (stream CalculationResponse);
+    // grpc client streaming
+    rpc ComputeAverage(stream AverageRequest) returns (CalculationResponse);
+    // grpc bi-directional streaming
+    rpc FindMaximum(stream MaximumRequest) returns (stream CalculationResponse);
+
+}
